@@ -17,7 +17,8 @@ model users {
   first_name    String
   middle_name   String?
   last_name     String
-  refresh_token String
+  password      String
+  refresh_token String?
   role          roles   @relation(fields: [role_id], references: [id])
   role_id       Int
 }
