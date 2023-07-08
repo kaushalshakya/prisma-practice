@@ -9,7 +9,8 @@ const errorHandler = require('./middlewares/errorHandler');
 const { 
     customerRegisterRoute, 
     adminRegisterRoute, 
-    userRoute
+    userRoute,
+    loginRoute
 } = require('./routes');
 
 app.get('/', (req, res) =>{
@@ -21,8 +22,9 @@ app.get('/', (req, res) =>{
     )
 })
 
-app.use('/api/v1/login', customerRegisterRoute);
-app.use('/api/v1/admin-login', adminRegisterRoute);
+app.use('/api/v1/login', loginRoute);
+app.use('/api/v1/register', customerRegisterRoute);
+app.use('/api/v1/admin-register', adminRegisterRoute);
 app.use('/api/v1/users', userRoute);
 app.use(errorHandler);
 

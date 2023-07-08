@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const asyncHandler = require('express-async-handler');
-const { postNewUser } = require('../../models/auth/registerUser');
+const { postNewUser } = require('../../models/auth/registerModel');
 
 const registerUser = asyncHandler(async(req, res) =>{
     const password = req.body.password;
