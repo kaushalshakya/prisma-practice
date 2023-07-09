@@ -8,9 +8,8 @@ require('dotenv').config();
 
 const login = asyncHandler(async (req, res) =>{
     const username = req.body.username;
-    const email = req.body.email;
     const password = req.body.password;
-    if(!(username || email) || !password) { 
+    if(!username || !password) { 
         return res.status(400).json(
             {
                 status: 400,
@@ -18,12 +17,8 @@ const login = asyncHandler(async (req, res) =>{
             }
         )
     }
-    const credentials = {
-        username: username,
-        email: email,
-        password: password
-    }
-    const result = await loginUser(credentials);
+    const result = await loginUser(username, password);
+    console.log(result);
     const dbPassword = result.password;
     const checkPassword = bcrypt.compareSync(password, dbPassword);
     if(!checkPassword){
@@ -36,25 +31,27 @@ const login = asyncHandler(async (req, res) =>{
     }
     const accessToken = jwt.sign(
         {
-            userInfo: username? username : email,
-            role: result.role_id
+            username: username,
+            role: result.role_id,
+            id: result.id
         },
         process.env.ACCESS_TOKEN,
-        {
+        /*{
             expiresIn: '5m'
-        }
+        }*/
     )
     const refreshToken = jwt.sign(
         {
-            userInfo: username? username : email,
-            role: result.role_id
+            username: username,
+            role: result.role_id,
+            id: result.id
         },
         process.env.REFRESH_TOKEN,
-        {
+        /*{
             expiresIn: '25m'
-        }
+        }*/
     )
-    setRefreshToken(credentials, refreshToken)
+    setRefreshToken(username, refreshToken)
     res.status(200).json(
         {
             status: 200,

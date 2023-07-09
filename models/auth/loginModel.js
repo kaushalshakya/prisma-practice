@@ -2,14 +2,11 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient;
 const asyncHandler = require('express-async-handler');
 
-const loginUser = asyncHandler(async(credentials) =>{
+const loginUser = asyncHandler(async(username) =>{
     const response = await prisma.users.findFirst(
         {
             where : {
-                OR: [ 
-                    {username : credentials.username},
-                    {email: credentials.email},
-                ]
+                username: username
             }
         }
     )
@@ -17,14 +14,11 @@ const loginUser = asyncHandler(async(credentials) =>{
     return response;
 })
 
-const setRefreshToken = asyncHandler(async(credentials, refreshToken) =>{
+const setRefreshToken = asyncHandler(async(username, refreshToken) =>{
     const response = await prisma.users.update(
         {
             where : {
-                OR: [ 
-                    {username : credentials.username},
-                    {email: credentials.email},
-                ]
+                username: username
             },
             data : {
                 refresh_token: refreshToken

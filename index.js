@@ -13,6 +13,8 @@ const {
     loginRoute
 } = require('./routes');
 
+const verifyJwt = require('./middlewares/verifyJWT');
+
 app.get('/', (req, res) =>{
     res.status(200).json(
         {
@@ -25,6 +27,9 @@ app.get('/', (req, res) =>{
 app.use('/api/v1/login', loginRoute);
 app.use('/api/v1/register', customerRegisterRoute);
 app.use('/api/v1/admin-register', adminRegisterRoute);
+
+app.use(verifyJwt);
+
 app.use('/api/v1/users', userRoute);
 app.use(errorHandler);
 
